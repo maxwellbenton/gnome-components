@@ -1,4 +1,4 @@
-import { ChestWebComponent, GnomeWebComponent, MushroomWebComponent } from "./web-component";
+import { ChestWebComponent, GnomeWebComponent, MushroomWebComponent } from "./web-components";
 
 // customElements.define("my-subscription", SubscriptionWebComponent);
 customElements.define("gc-mushroom", MushroomWebComponent);

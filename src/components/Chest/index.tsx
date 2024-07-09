@@ -28,11 +28,12 @@ export const Chest: FC<ChestProps> = ({ position }: ChestProps) => {
   };
 
   return (
-    <>
+    <div className={`__chest-${uuid}`}>
       <style>{styles}</style>
       <style>
         {`
           .__chest-${uuid} {
+            position: absolute;
             left: ${cachedPosition.x}px;
             top: ${cachedPosition.y}px;
           }
@@ -40,12 +41,12 @@ export const Chest: FC<ChestProps> = ({ position }: ChestProps) => {
       </style>
       <Grow in={true} {...{ timeout: Math.random() * 3000 }}>
         <img
-          className={`__chest __chest-${uuid}`}
+          className="__chest"
           src={opened ? ChestOpenPNG : ChestClosedPNG}
           alt="chest"
           onClick={handleClick}
         />
       </Grow>
-    </>
+    </div>
   );
 };

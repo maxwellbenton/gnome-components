@@ -8,18 +8,24 @@ import { Position } from "../../types";
 import { generateRandomPosition } from "../../services/random";
 
 export interface GnomeProps {
-  position?: Position;
+  x?: number;
+  y?: number;
+  facing?: "left" | "right";
   gnome?: number;
 }
 
 export const Gnome: FC<GnomeProps> = (
-  { position, gnome }: GnomeProps = { gnome: 1 }
+  { x, y, facing , gnome }: GnomeProps = { gnome: 1 }
 ) => {
   const { height, width } = useWindowDimensions();
-  const { x, y } = generateRandomPosition(height, width);
+  const { x: randomX, y: randomY } = generateRandomPosition(height, width);
   const uuid = crypto.randomUUID();
-  const [cachedPosition] = useState<Position>(position || { x, y }); // [1
-  console.log({ facing: position?.facing })
+  const [cachedPosition] = useState<Position>({ 
+    x: x || randomX, 
+    y: y || randomY, 
+    facing: facing || "right"
+  });
+  console.log({ facing: cachedPosition?.facing })
   return (
     <>
       <style>{styles}</style>
@@ -28,7 +34,7 @@ export const Gnome: FC<GnomeProps> = (
           .__gnome-${uuid} {
             left: ${cachedPosition?.x}px;
             top: ${cachedPosition?.y}px;
-            ${position?.facing === "left" ? "transform: rotateY(180deg);" : ""}
+            ${cachedPosition?.facing === "left" ? "transform: rotateY(180deg);" : ""}
           }
         `}
       </style>
