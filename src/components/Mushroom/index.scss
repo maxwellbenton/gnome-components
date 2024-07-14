@@ -1,7 +1,15 @@
 .__mushroom {
-  display: block;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
   border-radius: 50%;
   height: 10px;
   width: 10px;
-  position: absolute;
+  z-index: 1000;
+}
+
+.__chest--image {
+  height: 10px;
+  width: 10px;
 }

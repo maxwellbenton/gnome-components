@@ -1,6 +1,12 @@
 .__gnome {
-  display: block;
-  position: absolute;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.__gnome--image {
   height: 30px;
   width: 24px;
 }
