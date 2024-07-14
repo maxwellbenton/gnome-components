@@ -15,34 +15,39 @@ export interface GnomeProps {
 }
 
 export const Gnome: FC<GnomeProps> = (
-  { x, y, facing , gnome }: GnomeProps = { gnome: 1 }
+  { x, y, facing, gnome }: GnomeProps = { gnome: 1 }
 ) => {
   const { height, width } = useWindowDimensions();
   const { x: randomX, y: randomY } = generateRandomPosition(height, width);
   const uuid = crypto.randomUUID();
-  const [cachedPosition] = useState<Position>({ 
-    x: x || randomX, 
-    y: y || randomY, 
-    facing: facing || "right"
+  const [cachedPosition] = useState<Position>({
+    x: x || randomX,
+    y: y || randomY,
+    facing: facing || "right",
   });
-  console.log({ facing: cachedPosition?.facing })
+
   return (
-    <>
+    <div id={`__gnome-${uuid}`} className={`__gnome`}>
       <style>{styles}</style>
       <style>
         {`
           .__gnome-${uuid} {
             left: ${cachedPosition?.x}px;
             top: ${cachedPosition?.y}px;
-            ${cachedPosition?.facing === "left" ? "transform: rotateY(180deg);" : ""}
+          }
+
+          .__gnome--image {
+            ${
+              cachedPosition?.facing === "left" && "transform: rotateY(180deg);"
+            }
           }
         `}
       </style>
       <img
-        className={`__gnome __gnome-${uuid}`}
-        src={gnome === 1 ? GnomeTwo : GnomeOne}
+        className="__gnome--image"
+        src={gnome == 1 ? GnomeTwo : GnomeOne}
         alt="a gnome"
       />
-    </>
+    </div>
   );
 };

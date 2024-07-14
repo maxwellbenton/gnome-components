@@ -7,11 +7,8 @@ import Grow from "@mui/material/Grow";
 import { Position } from "../../types";
 
 export interface MushroomProps {
-  position?: Position
+  position?: Position;
 }
-
-
-
 
 export const Mushroom: FC<MushroomProps> = ({ position }: MushroomProps) => {
   const uuid = crypto.randomUUID();
@@ -21,23 +18,19 @@ export const Mushroom: FC<MushroomProps> = ({ position }: MushroomProps) => {
   const [cachedPosition] = useState<Position>(position || { x, y }); // [1
 
   return (
-    <>
+    <div id={`__mushroom-${uuid}`} className={`__mushroom`}>
       <style>{styles}</style>
       <style>
         {`
           .__mushroom-${uuid} {
-            left: ${cachedPosition.x}px;
-            top: ${cachedPosition.y}px;
+            left: ${cachedPosition?.x}px;
+            top: ${cachedPosition?.y}px;
           }
         `}
       </style>
       <Grow in={true} {...{ timeout: Math.random() * 3000 }}>
-        <img
-          className={`__mushroom __mushroom-${uuid}`}
-          src={MushroomPNG}
-          alt="mushroom"
-        />
+        <img className={`__mushroom--image`} src={MushroomPNG} alt="mushroom" />
       </Grow>
-    </>
+    </div>
   );
 };

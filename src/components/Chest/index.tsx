@@ -4,49 +4,61 @@ import styles from "./index.scss?inline";
 import { FC, useState } from "react";
 import { generateRandomPosition } from "../../services/random";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
-import Grow from "@mui/material/Grow";
 import { Position } from "../../types";
 import { openTimeout } from "./constants";
 
 export interface ChestProps {
   position?: Position;
+  opened?: string;
+  closed?: string;
 }
 
-export const Chest: FC<ChestProps> = ({ position }: ChestProps) => {
+export const Chest: FC<ChestProps> = ({
+  position,
+  opened,
+  closed,
+}: ChestProps) => {
   const { height, width } = useWindowDimensions();
-  const { x, y } = generateRandomPosition(height, width);
   const uuid = crypto.randomUUID();
-
-  const [cachedPosition] = useState<Position>(position || { x, y }); // [1
-  const [opened, setOpened] = useState(false);
+  const [cachedOpened, setCachedOpened] = useState(
+    closed === "true" ? false : opened === "true" || false
+  );
+  const [cachedPosition] = useState<Position>(
+    position || generateRandomPosition(height, width)
+  );
 
   const handleClick = () => {
-    setOpened(true);
+    closed === "true"
+      ? setCachedOpened(true)
+      : opened === "true"
+      ? setCachedOpened(false)
+      : setCachedOpened(true);
     setTimeout(() => {
-      setOpened(false);
+      closed === "true"
+        ? setCachedOpened(false)
+        : opened === "true"
+        ? setCachedOpened(true)
+        : setCachedOpened(false);
     }, openTimeout);
   };
 
   return (
-    <div className={`__chest-${uuid}`}>
+    <div id={`__chest-${uuid}`} className={`__chest`}>
       <style>{styles}</style>
       <style>
         {`
-          .__chest-${uuid} {
-            position: absolute;
+          #__chest-${uuid} {
             left: ${cachedPosition.x}px;
             top: ${cachedPosition.y}px;
           }
         `}
       </style>
-      <Grow in={true} {...{ timeout: Math.random() * 3000 }}>
-        <img
-          className="__chest"
-          src={opened ? ChestOpenPNG : ChestClosedPNG}
-          alt="chest"
-          onClick={handleClick}
-        />
-      </Grow>
+      <img
+        className="__chest--image"
+        src={cachedOpened ? ChestOpenPNG : ChestClosedPNG}
+        alt="a chest for a gnome"
+        onClick={handleClick}
+      />
     </div>
   );
 };
