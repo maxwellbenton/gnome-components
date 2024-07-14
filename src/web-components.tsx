@@ -4,6 +4,18 @@ import { normalizeAttribute } from "./services/components";
 import { Chest, ChestProps } from "./components/Chest";
 import { Gnome, GnomeProps } from "./components/Gnome";
 
+
+function getPropsFromAttributes<T>(component: HTMLElement): T {
+  const props: Record<string, string> = {};
+
+  for (let index = 0; index < component.attributes.length; index++) {
+    const attribute = component.attributes[index];
+    props[normalizeAttribute(attribute.name)] = attribute.value;
+  }
+
+  return props as T;
+}
+
 export class MushroomWebComponent extends HTMLElement {
   constructor() {
     super();
@@ -11,20 +23,21 @@ export class MushroomWebComponent extends HTMLElement {
   }
 
   connectedCallback() {
-    const props = this.getPropsFromAttributes<MushroomProps>();
+    const props = getPropsFromAttributes<MushroomProps>(this);
     const root = ReactDOM.createRoot(this.shadowRoot as ShadowRoot);
     root.render(<Mushroom {...props} />);
   }
 
-  private getPropsFromAttributes<T>(): T {
-    const props: Record<string, string> = {};
+  disconnectedCallback() {
+    console.log("Custom element removed from page.");
+  }
 
-    for (let index = 0; index < this.attributes.length; index++) {
-      const attribute = this.attributes[index];
-      props[normalizeAttribute(attribute.name)] = attribute.value;
-    }
-
-    return props as T;
+  attributeChangedCallback(
+    name: unknown,
+    oldValue: unknown,
+    newValue: unknown
+  ) {
+    console.log("attribute changed", name, oldValue, newValue, this);
   }
 }
 
@@ -35,20 +48,21 @@ export class ChestWebComponent extends HTMLElement {
   }
 
   connectedCallback() {
-    const props = this.getPropsFromAttributes<ChestProps>();
+    const props = getPropsFromAttributes<ChestProps>(this);
     const root = ReactDOM.createRoot(this.shadowRoot as ShadowRoot);
     root.render(<Chest {...props} />);
   }
 
-  private getPropsFromAttributes<T>(): T {
-    const props: Record<string, string> = {};
-
-    for (let index = 0; index < this.attributes.length; index++) {
-      const attribute = this.attributes[index];
-      props[normalizeAttribute(attribute.name)] = attribute.value;
-    }
-
-    return props as T;
+  disconnectedCallback() {
+    console.log("Custom element removed from page.");
+  }
+  
+  attributeChangedCallback(
+    name: unknown,
+    oldValue: unknown,
+    newValue: unknown
+  ) {
+    console.log("attribute changed", name, oldValue, newValue, this);
   }
 }
 
@@ -59,19 +73,21 @@ export class GnomeWebComponent extends HTMLElement {
   }
 
   connectedCallback() {
-    const props = this.getPropsFromAttributes<GnomeProps>();
+    const props = getPropsFromAttributes<GnomeProps>(this);
     const root = ReactDOM.createRoot(this.shadowRoot as ShadowRoot);
     root.render(<Gnome {...props} />);
   }
 
-  private getPropsFromAttributes<T>(): T {
-    const props: Record<string, string> = {};
 
-    for (let index = 0; index < this.attributes.length; index++) {
-      const attribute = this.attributes[index];
-      props[normalizeAttribute(attribute.name)] = attribute.value;
-    }
-
-    return props as T;
+  disconnectedCallback() {
+    console.log("Custom element removed from page.");
+  }
+  
+  attributeChangedCallback(
+    name: unknown,
+    oldValue: unknown,
+    newValue: unknown
+  ) {
+    console.log("attribute changed", name, oldValue, newValue, this);
   }
 }
